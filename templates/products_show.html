@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+
+{% block title %}{{ product.name }} - miniVeikals{% endblock %}
+
+{% block content %}
+<div class="products-show">
+    <div class="product-image">
+        <img src="{{ url_for('static', filename='images/products/' ~ product['image']) }}"
+             alt="{{ product['name'] }}"
+             style="max-width: 300px; height: auto;">
+    </div>
+    <div class="product-details">
+        <h2>{{ product["name"] }}</h2>
+        <p>Cena: {{ product["price"] }} €</p>
+        <p>
+            Materiāls:
+            {% if product["material"] %}
+                <a href="{{ url_for('materiali_show', materiali_id=product['material']) }}">
+                    {{ product["materiali_nosaukums"] }}
+                </a>
+            {% else %}
+                Nav norādīts
+            {% endif %}
+        </p>
+        <p>
+            Krāsa:
+            {% if product["krasa"] %}
+                <a href="{{ url_for('krasa_show', krasa_id=product['krasa']) }}">
+                    {{ product["krasa_nosaukums"] }}
+                </a>
+            {% else %}
+                Nav norādīta
+            {% endif %}
+        </p>
+        <p>
+            Ražotājs:
+            {% if product["taisitajs"] %}
+                <a href="{{ url_for('razotajs_show', taisitajs_id=product['taisitajs']) }}">
+                    {{ product["taisitajs_nosaukums"] }}
+                </a>
+            {% else %}
+                Nav norādīts
+            {% endif %}
+        </p>
+
+        <!-- Dzēšanas forma -->
+        <form action="{{ url_for('delete_product', product_id=product['id']) }}" method="POST" 
+              onsubmit="return confirm('Vai tiešām vēlies dzēst šo produktu?');">
+            <button type="submit" class="btn btn-danger">Dzēst šo produktu</button>
+        </form>
+
+        <p><a href="{{ url_for('products') }}">Atpakaļ uz produktu sarakstu</a></p>
+    </div>
+</div>
+{% endblock %}
